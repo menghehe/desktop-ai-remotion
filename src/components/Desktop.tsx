@@ -10,8 +10,8 @@ const DesktopIcon = ({src, label}: {src: string; label: string}) => (
 
 export const Desktop = () => {
   const frame = useCurrentFrame();
-  const weChatActive = frame >= 20 && frame < 180;
-  const deepSeekActive = frame >= 180;
+  const weChatActive = frame >= 20;
+  const deepSeekActive = frame >= 60;
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-[#376f9e]">
@@ -23,6 +23,9 @@ export const Desktop = () => {
         <DesktopIcon src="win11/icons/recycle-bin.png" label="回收站" />
         <DesktopIcon src="win11/icons/explorer.png" label="文件资源管理器" />
         <DesktopIcon src="win11/icons/edge.png" label="Microsoft Edge" />
+        <div className="mt-1 flex h-12 w-[92px] items-center justify-center rounded bg-[#16854b] text-2xl font-bold text-white shadow-md">X</div>
+        <div className="-mt-2 w-[116px] text-center text-[11px] leading-4 text-white [text-shadow:0_1px_3px_#000]">老婆专属夜宵基金.xlsx</div>
+        <DesktopIcon src="win11/icons/explorer.png" label="一二布布表情包库存" />
       </div>
 
       <div className="taskbar-glass absolute inset-x-0 bottom-0 flex h-[72px] items-center px-5">
@@ -42,7 +45,7 @@ export const Desktop = () => {
             <Img src={staticFile('win11/system/battery.png')} className="h-5 w-5 object-contain" />
           </div>
           <div className="text-right text-xs leading-5">
-            <div>10:16</div>
+            <div>21:30</div>
             <div>2026/10/30</div>
           </div>
         </div>

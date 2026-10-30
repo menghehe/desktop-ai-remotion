@@ -1,18 +1,22 @@
-import {AbsoluteFill, Sequence} from 'remotion';
+import {AbsoluteFill, Audio, staticFile} from 'remotion';
 import {Desktop} from './components/Desktop';
 import {WeChatWindow} from './components/WeChatWindow';
 import {DeepSeekWindow} from './components/DeepSeekWindow';
+import {StoryActors} from './components/StoryActors';
+import {StickerFlood} from './components/StickerFlood';
+import {StoryOverlay} from './components/StoryOverlay';
+import {ACT} from './lib/storyboard';
 
 export const DesktopAI = () => {
   return (
     <AbsoluteFill className="bg-[#dfeef8] font-sans">
       <Desktop />
-      <Sequence from={20} durationInFrames={168} premountFor={30}>
-        <WeChatWindow />
-      </Sequence>
-      <Sequence from={180} durationInFrames={180} premountFor={30}>
-        <DeepSeekWindow />
-      </Sequence>
+      <WeChatWindow />
+      <DeepSeekWindow />
+      <StoryActors />
+      <StickerFlood startFrame={ACT.flood} count={65} />
+      <StoryOverlay />
+      <Audio src={staticFile('audio/desktop-story.wav')} />
     </AbsoluteFill>
   );
 };
