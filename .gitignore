@@ -2,6 +2,7 @@ node_modules/
 out/
 .source-win11React/
 .source-deepseek-harness/
+.source-dsh-pet/
 .tools/
 .DS_Store
 sprite-work/

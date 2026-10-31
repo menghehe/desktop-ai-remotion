@@ -1,53 +1,47 @@
-# 一二布布桌面小剧场 · Remotion
+# 一二布布桌面小剧场 · Remotion 连续剧引擎版
 
-根据 `videp.pdf` 最终方案制作的 **60 秒 Windows 11 桌面剧情短片**：老婆微信邀约炸鸡，一二和布布从表情包中破窗，对抗 DeepSeek 桌面管家，最后用 4000 张表情包耗尽 Token。
+基于 **6 姿态归一化精灵图骨骼（`SpriteActor`）+ 可交互物理微信舞台（`WeChatWindow`）+ 虚拟摄像机推拉摇移（`DesktopCamera`）+ 分镜脚本 DSL（`EpisodeScript`）** 构建的 Windows 11 桌面连续剧工程。
 
-## 成片规格
+## 核心升级亮点
 
-- 1920 × 1080，30 fps，1800 帧，60 秒
-- React + Tailwind CSS + Remotion
-- `@remotion/gif` 逐帧驱动 GIF，避免普通 `<img>` 在渲染时失控
-- 原创合成 BGM / 音效，无外部音频采样
-- 59 个本地角色素材：7 个核心动作 GIF、2 张头像、50 张高潮 GIF
+1. **淘汰漂移 GIF，全面切换为脚底锚点精灵图引擎（`src/components/SpriteActor.tsx`）**
+   - 统一使用 `512 × 512` 标准画布与 `FOOT_ANCHOR = 455 / 512` 脚底接触基准线。
+   - **零膨胀复用状态机**：每个角色仅凭 6 张基础帧（`000: stand`, `001: crouch`, `002: lift`, `003: air`, `004: step`, `005: stand`）即可程序化组合出 `idle`（呼吸）、`run`（小碎步颠簸）、`jump`（抛物线起跳+挤压回弹）、`stomp`（原地猛踩）、`smash`（大锤劈砸）、`push`/`pull`（前倾推车/后仰拔河+脚底灰尘粒子）和 `cheer`（欢呼跳跃）8 种戏剧状态。
+   - **手部道具挂点与头顶漫画气泡**：内置 `hammer`（100T 玩具锤挥击动效）、`shield`（夜宵基金护盾）、`chicken`（炸鸡腿）图层挂载，以及自动防镜像翻转的角色头顶台词气泡与情绪徽章（`❗/💢/💦/✨/❤️`）。
+2. **高还原、可物理破坏的微信 PC 舞台（`src/components/WeChatWindow.tsx`）**
+   - 原生三栏布局（`#2E2E2E` 导航栏 + `#EAE8E7` 会话列表 + `#F5F5F5` 聊天主舞台），补齐未读红点角标、群聊免打扰静音图标、置顶三角标、会话预览实时变更与 `对方正在输入...` 状态。
+   - **四大物理交互特效**：
+     - **气泡弹簧跳板**：一二破窗跃向第一条炸鸡消息气泡时，气泡受压下陷回弹并弹出 `BOING!` 反馈。
+     - **破窗裂纹残影**：一二跳出表情槽位后留下红色玻璃裂纹与破壁提示。
+     - **挥锤逐字击碎文案**：一二在输入框挥锤时，DeepSeek 写的 `不吃！我在啃黄瓜！` 被逐字砸红并沿抛物线向四周旋转飞散。
+     - **踩踏发送按钮同步受压**：将 `SpriteJumpTest` 的顶部原点按钮压缩（`scaleY` 下陷 + 绿色冲击射线 + 窗口微震）完整合入主片。
+3. **全局虚拟摄像机与多集连续剧架构（`src/components/DesktopCamera.tsx` & `src/episodes/`）**
+   - 支持按关键帧平滑推拉聚焦（Zoom & Pan）与受击震屏（Camera Shake）。
+   - 内置第 01 集《夜宵炸鸡保卫战》（`ep01_fried_chicken.ts`）与第 02 集《周五准点下班保卫战》（`ep02_cart_defense.ts`），100% 复用同一套一二布布精灵图。
+
+4. **DeepSeek 透明桌宠（`src/components/DeepSeekPet.tsx`）**
+   - 使用 [PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet) 的透明 WebM 动画，映射 `idle / think / panic / dizzy` 四状态。
+   - 桌宠站在任务栏右侧，发射 AI 光标、受击抖动；文件夹砸中后 Token 从 96% 降至 0%，进入服务器繁忙休眠状态。
+   - 原资源许可保存在 `public/deepseek-pet/LICENSE.txt`；GIF 预览及 PNG 序列数组映射保留在组件中，便于替换。
 
 ## 启动与输出
 
 ```bash
 npm install
-npm run studio       # Remotion Studio，选择 DesktopAI
-npm run typecheck
-npm run still        # 第 250 帧预览
-npm run render       # out/desktop-ai.mp4
+npm run studio       # 打开 Remotion Studio（含 DesktopAI / DesktopAI-Wide / DesktopAI-EP02 / SpriteJumpTest 四个合成）
+npm run typecheck    # TypeScript 类型检查
+npm run still        # 导出预览帧
+npm run render       # 渲染输出 out/desktop-ai.mp4
 ```
 
-## 五幕时间轴
+## 切分新生成的 AI 精灵图
 
-| 帧 / 时间 | 剧情 |
-| --- | --- |
-| 0–239 / 0–8s | 老婆发来炸鸡邀约，DeepSeek 接管鼠标准备拒绝 |
-| 240–539 / 8–18s | 一二从聊天框破窗，打开表情面板拽出布布 |
-| 540–1049 / 18–35s | 争夺夜宵基金 Excel，砸碎拒绝文案并改写发送 |
-| 1050–1439 / 35–48s | 合力把 4000+ 表情包文件夹投喂给 DeepSeek |
-| 1440–1799 / 48–60s | 65 个弹窗连续轰炸，Token 归零，一二布布干饭庆祝 |
+使用 AI 生成新的 `3列 × 2行` 角色精灵图后，直接运行升级后的多角色切图脚本：
 
-## 工程结构
+```bash
+# 切分一二基础动作图 -> public/sprites/yier/jump/000..005.png
+python tools/prepare_jump_sprites.py --actor yier --pack jump --source path/to/yier_sheet.png
 
-- `src/DesktopAI.tsx`：总合成、音频与图层顺序
-- `src/lib/storyboard.ts`：关键帧、文案、打字和 Token 计算
-- `src/components/WeChatWindow.tsx`：微信 PC 三栏界面及聊天状态
-- `src/components/DeepSeekWindow.tsx`：Edge + DeepSeek 界面、思考链和 Token 仪表
-- `src/components/StickerActor.tsx`：GIF 角色位移、抛物线跳跃、落地 Q 弹
-- `src/components/AICursor.tsx`：蓝色 AI 鼠标及鲸鱼娘状态
-- `src/components/StoryActors.tsx`：角色、文件与鼠标的完整分镜
-- `src/components/StickerFlood.tsx`：确定性随机弹窗潮
-- `public/stickers/manifest.json`：素材逻辑名到 D 盘原始资产的映射
-- `tools/generate_audio.py`：原创配乐与音效的可复现生成脚本
-
-所有剧情只由 Remotion 当前帧驱动，不依赖鼠标事件或 React 交互状态。修改 `storyboard.ts` 和各组件的关键帧即可调整节奏。
-
-## 资源说明
-
-- Windows 11 壁纸和图标来自 `blueedgetechno/win11React`，许可副本在 `public/win11/`。
-- DeepSeek 鲸鱼资源来自 DeepSeek Harness，许可副本在 `public/deepseek-harness/`。
-- 一二布布素材由用户从 `D:\一二布布图` 提供；未修改原资产。
-- Windows、微信、DeepSeek、一二布布相关名称和图形归各自权利人所有。本工程为界面动画演示。
+# 切分布布基础动作图 -> public/sprites/bubu/jump/000..005.png
+python tools/prepare_jump_sprites.py --actor bubu --pack jump --source path/to/bubu_sheet.png
+```

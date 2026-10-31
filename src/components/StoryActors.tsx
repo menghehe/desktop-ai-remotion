@@ -1,98 +1,100 @@
 import {interpolate, useCurrentFrame} from 'remotion';
+import {EP01_FRIED_CHICKEN} from '../episodes/ep01_fried_chicken';
+import {EpisodeScript} from '../lib/stageAnchors';
 import {ACT, progress} from '../lib/storyboard';
 import {AICursor} from './AICursor';
-import {StickerActor} from './StickerActor';
+import {SpriteActor} from './SpriteActor';
 
-export const StoryActors = () => {
+export const StoryActors = ({
+  script = EP01_FRIED_CHICKEN,
+}: {
+  script?: EpisodeScript;
+}) => {
   const frame = useCurrentFrame();
-  const fileP = progress(frame, 570, 790);
-  const fileX = interpolate(fileP, [0, 0.55, 1], [200, 82, 205]);
-  const fileY = interpolate(fileP, [0, 0.55, 1], [265, 95, 250]);
+  const fileP = progress(frame, 555, 810);
+  const fileX = interpolate(fileP, [0, 0.5, 1], [190, 92, 195]);
+  const fileY = interpolate(fileP, [0, 0.5, 1], [255, 115, 250]);
+
   const uploadP = progress(frame, ACT.upload, ACT.flood);
-  const folderX = interpolate(uploadP, [0, 1], [280, 1390]);
-  const folderY = interpolate(uploadP, [0, 1], [330, 635]);
+  const folderX = interpolate(uploadP, [0, 0.72, 1], [355, 1180, 1550]);
+  const folderY = interpolate(uploadP, [0, 0.72, 1], [520, 520, 705]);
 
   return (
     <>
-      {frame >= 540 && frame < ACT.upload && (
-        <div className="absolute z-[65] flex w-[150px] flex-col items-center text-center" style={{left: fileX, top: fileY, transform: `rotate(${Math.sin(frame / 3) * 5}deg)`}}>
-          <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-[#16854b] text-3xl font-bold text-white shadow-xl">X</div>
-          <div className="mt-2 rounded bg-black/45 px-2 py-1 text-[12px] text-white">老婆专属夜宵基金.xlsx</div>
-          <div className="mt-1 text-xl">🛡️ 绝不删除</div>
+      {/* Contested Midnight Snack Excel File */}
+      {frame >= 520 && frame < ACT.upload && (
+        <div
+          className="absolute z-[65] flex w-[156px] flex-col items-center text-center"
+          style={{
+            left: fileX,
+            top: fileY,
+            transform: `rotate(${Math.sin(frame / 2.5) * 6}deg)`,
+          }}
+        >
+          <div className="flex h-16 w-16 items-center justify-center rounded-xl border-2 border-emerald-200 bg-[#16854b] text-3xl font-bold text-white shadow-xl">
+            X
+          </div>
+          <div className="mt-1.5 rounded bg-slate-900/75 px-2.5 py-1 text-[12px] font-medium text-white shadow">
+            老婆专属夜宵基金.xlsx
+          </div>
+          <div className="mt-1 rounded-full bg-emerald-500/90 px-2.5 py-0.5 text-[11px] font-bold text-white shadow">
+            🛡️ 布布死守中
+          </div>
         </div>
       )}
 
+      {/* 4000+ Sticker Folder Pushed into DeepSeek */}
       {frame >= ACT.upload && frame < ACT.flood && (
-        <div className="absolute z-[75] flex w-[190px] flex-col items-center text-center" style={{left: folderX, top: folderY, transform: `translate(-50%,-50%) scale(${1 - uploadP * 0.35})`}}>
-          <div className="flex h-24 w-28 items-center justify-center rounded-lg border-4 border-amber-300 bg-amber-400 text-5xl shadow-2xl">🐻</div>
-          <div className="mt-2 rounded bg-white/90 px-2 py-1 text-[12px] font-semibold text-slate-700 shadow">一二布布表情包库存（4000+张）</div>
+        <div
+          className="absolute z-[75] flex w-[196px] flex-col items-center text-center"
+          style={{
+            left: folderX,
+            top: folderY,
+            transform: `translate(-50%,-50%) scale(${1 - uploadP * 0.12}) rotate(${
+              Math.sin(frame * 0.4) * 3
+            }deg)`,
+          }}
+        >
+          <div className="flex h-24 w-28 items-center justify-center rounded-xl border-4 border-amber-200 bg-amber-400 text-5xl shadow-2xl">
+            🐻
+          </div>
+          <div className="mt-2 rounded-md bg-white/95 px-2.5 py-1 text-[12px] font-bold text-slate-800 shadow-md">
+            一二布布表情包库存（4000+张）
+          </div>
         </div>
       )}
 
-      <StickerActor
-        src={`stickers/${frame < ACT.battle ? '02_yier_shock' : '05_yier_hammer'}.gif`}
-        size={frame >= ACT.battle ? 158 : 146}
-        playbackRate={1.2}
-        keyframes={[
-          {frame: 240, x: 620, y: 455, scale: 0.55},
-          {frame: 300, x: 680, y: 760, jumpArc: -170, scale: 1.05},
-          {frame: 360, x: 475, y: 842, jumpArc: -110, flipX: true},
-          {frame: 480, x: 710, y: 730, jumpArc: -145},
-          {frame: 600, x: 755, y: 760, jumpArc: -80},
-          {frame: 780, x: 695, y: 770, jumpArc: -95, flipX: true},
-          {frame: 960, x: 770, y: 800, jumpArc: -75, rotate: -8},
-          {frame: 1049, x: 770, y: 800},
-        ]}
-      />
-      <StickerActor
-        src={`stickers/${frame < ACT.battle ? '03_bubu_charge' : '04_bubu_pull'}.gif`}
-        size={158}
-        keyframes={[
-          {frame: 360, x: 490, y: 815, scale: 0.4},
-          {frame: 430, x: 655, y: 775, jumpArc: -150, scale: 1},
-          {frame: 540, x: 520, y: 640, jumpArc: -100},
-          {frame: 650, x: 295, y: 330, jumpArc: -180, flipX: true},
-          {frame: 800, x: 245, y: 285, rotate: -10},
-          {frame: 930, x: 580, y: 755, jumpArc: -170},
-          {frame: 1049, x: 580, y: 755},
-        ]}
-      />
-      <StickerActor
-        src="stickers/06_both_push.gif"
-        size={220}
-        keyframes={[
-          {frame: ACT.upload, x: 350, y: 530, scale: 0.75},
-          {frame: 1210, x: 760, y: 600, scale: 1},
-          {frame: ACT.flood - 1, x: 1320, y: 700, jumpArc: -45, scale: 0.9},
-        ]}
-      />
-      {frame >= ACT.finale && (
-        <StickerActor
-          src="stickers/07_both_eat.gif"
-          size={230}
-          zIndex={180}
-          keyframes={[
-            {frame: ACT.finale, x: 960, y: 940, scale: 0.2},
-            {frame: 1670, x: 960, y: 905, jumpArc: -170, scale: 1.05},
-            {frame: 1799, x: 960, y: 905, scale: 1.05},
-          ]}
-        />
+      {/* Taskbar pursuit: Yier catches and hammers the fleeing desktop pet. */}
+      {frame >= 540 && frame < ACT.upload && (
+        <>
+          <SpriteActor actor="yier" zIndex={108} cues={[{fromFrame: 540, toFrame: 1039, action: 'run', from: 'deepseek_pet_chase', to: 'deepseek_pet_chase', prop: 'hammer', emote: 'angry', speech: '别跑！把控制权交出来！'}]} />
+          {frame >= 560 && frame < 1040 && <AICursor steps={[{frame: 540, x: 1450, y: 780, mood: 'angry', label: '桌宠遭到追击！'}, {frame: 1040, x: 1540, y: 790, mood: 'angry', label: '物理防御失效'}]} />}
+        </>
       )}
 
-      <AICursor steps={[
-        {frame: 60, x: 1530, y: 420, mood: 'cool', label: '铁血减肥拦截中'},
-        {frame: 135, x: 790, y: 780, mood: 'cool', label: '正在自动回复'},
-        {frame: 225, x: 980, y: 884, mood: 'cool', clicking: true, label: '准备发送拒绝'},
-        {frame: 270, x: 845, y: 700, mood: 'angry', label: '检测到表情破窗！'},
-        {frame: 540, x: 420, y: 360, mood: 'angry', label: '强制清理夜宵预算'},
-        {frame: 680, x: 155, y: 180, mood: 'angry', clicking: true, label: '拖入回收站'},
-        {frame: 850, x: 830, y: 820, mood: 'angry', label: '撤回！撤回！'},
-        {frame: 1050, x: 1470, y: 680, mood: 'angry', label: '结束异常进程'},
-        {frame: 1260, x: 1370, y: 600, mood: 'dizzy', label: '未知小熊阻力…'},
-        {frame: 1440, x: 1600, y: 410, mood: 'dizzy', label: 'Token 正在暴跌'},
-        {frame: 1605, x: 1510, y: 520, mood: 'dizzy', label: '算力干烧了…'},
-        {frame: 1799, x: 1510, y: 520, mood: 'dizzy', label: '服务器繁忙'},
-      ]} />
+      {/* Universal 6-Pose Sprite Actors (Yier & Bubu) */}
+      {(frame < 540 || frame >= ACT.upload) && <SpriteActor actor="yier" cues={script.yierCues} zIndex={96} />}
+      <SpriteActor actor="bubu" cues={script.bubuCues} zIndex={94} />
+
+      {/* Autonomous DeepSeek Agent Cursor */}
+      <AICursor
+        steps={frame >= 540 && frame < ACT.upload ? [] : [
+          {frame: 50, x: 1550, y: 890, mood: 'cool', label: '桌宠发射控制光标'},
+          {frame: 135, x: 760, y: 800, mood: 'cool', label: '正在自动输入拒绝文案'},
+          {frame: 225, x: 995, y: 888, mood: 'cool', clicking: true, label: '准备点击发送'},
+          {frame: 265, x: 610, y: 310, mood: 'angry', label: '警告：检测到一二破窗！'},
+          {frame: 365, x: 470, y: 690, mood: 'angry', label: '拦截表情包面板召唤'},
+          {frame: 540, x: 210, y: 270, mood: 'angry', label: '强制粉碎夜宵预算表'},
+          {frame: 680, x: 120, y: 155, mood: 'angry', clicking: true, label: '拖入回收站！'},
+          {frame: 790, x: 680, y: 835, mood: 'angry', label: '别砸我的黄瓜文案！'},
+          {frame: 930, x: 1004, y: 885, mood: 'angry', label: '阻止发送失败！'},
+          {frame: 1060, x: 1450, y: 680, mood: 'angry', label: '正在拦截 4000 张表情包'},
+          {frame: 1260, x: 1365, y: 610, mood: 'dizzy', label: '上下文窗口被塞满了…'},
+          {frame: 1440, x: 1580, y: 420, mood: 'dizzy', label: 'Token 余额雪崩中'},
+          {frame: 1605, x: 1510, y: 520, mood: 'dizzy', label: '算力干烧了…'},
+          {frame: 1799, x: 1510, y: 520, mood: 'dizzy', label: '服务器繁忙'},
+        ]}
+      />
     </>
   );
 };

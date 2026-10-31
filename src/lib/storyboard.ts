@@ -23,6 +23,7 @@ export const typed = (text: string, frame: number, start: number, speed = 2) =>
   text.slice(0, Math.max(0, Math.floor((frame - start) / speed)));
 
 export const tokenPercent = (frame: number) => {
-  if (frame < ACT.flood) return 98;
-  return Math.max(0, 98 - progress(frame, ACT.flood, 1608) * 98);
+  if (frame < ACT.upload) return 96;
+  const drain = progress(frame, 1320, 1580);
+  return Math.max(0, 96 * (1 - drain * drain));
 };
