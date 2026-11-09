@@ -1,9 +1,11 @@
-node_modules/
-out/
+node_modules
+out
+.remotion
+*.log
+.DS_Store
 .source-win11React/
 .source-deepseek-harness/
 .source-dsh-pet/
 .tools/
-.DS_Store
 sprite-work/
 sprite-source.jpg

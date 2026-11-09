@@ -1,12 +1,16 @@
 {
   "name": "desktop-ai-remotion",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "render": "remotion render src/index.ts DesktopAI out/desktop-ai.mp4",
-    "still": "remotion still src/index.ts DesktopAI out/preview.png --frame=250",
-    "typecheck": "tsc --noEmit"
+    "render": "remotion render src/index.ts DirectorBattleStage out/director-battle.mp4",
+    "render:legacy": "remotion render src/index.ts DesktopAI out/desktop-ai.mp4",
+    "render:showcase": "remotion render src/index.ts SpriteMatrixShowcase out/sprite-showcase.mp4",
+    "still": "remotion still src/index.ts DirectorBattleStage out/preview.png --frame=720",
+    "typecheck": "tsc --noEmit",
+    "gen:sprites": "python3 tools/generate_sprites.py",
+    "gen:audio": "python3 tools/generate_audio.py"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
